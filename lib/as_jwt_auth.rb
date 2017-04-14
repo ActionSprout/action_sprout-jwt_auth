@@ -7,8 +7,8 @@ module AsJWTAuth
     JWT.encode payload, key, 'ES256'
   end
 
-  def self.verify_jwt(jwt, public_key: )
-    verifier = VerifyJWT.new(public_key)
+  def self.verify_jwt(jwt, key: )
+    verifier = VerifyJWT.new(key)
     verifier.valid? jwt
   end
 end

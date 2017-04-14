@@ -32,7 +32,7 @@ RSpec.describe AsJWTAuth do
     let(:jwt) { JWT.encode payload, private_key, 'ES256' }
 
     it 'works' do
-      result = described_class.verify_jwt jwt, public_key: public_key
+      result = described_class.verify_jwt jwt, key: public_key
       expect(result).to be_truthy
     end
   end
