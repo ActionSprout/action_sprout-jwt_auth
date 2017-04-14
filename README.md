@@ -39,6 +39,30 @@ AsJWTAuth to handle finding the correct public key.
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+#### Setup
+1. Check out repo `https://github.com/ActionSprout/as_jwt_auth.git`
+2. `bin/setup` (this runs `bundle install`)
+3. Run tests with `rake spec`
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+
+**Use locally**
+To install this gem into a local project add to your Gemfile
+```ruby
+gem 'as_jwt_auth', path: 'relative/path/to/gem/repo'
+```
+and then `bundle install` in that project. Remember to add the Gemfury `source` before
+using in production.
+
+#### Release a new Version
+Update the version number in `lib/as_jwt_auth/version.rb` and make you final version change commit.
+Create a release tag with `gem_push=no rake release`.
+
+Make sure you have the git remote `fury` added (can be called anything).
+
+    $ git remote add fury https://PASSWORD@repo.fury.io/ORGANIZATION/
+
+
+To release the new verison we push to our Gemfury repo.
+
+    $ git push fury master
