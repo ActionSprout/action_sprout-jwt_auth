@@ -5,7 +5,7 @@ require 'as_jwt_auth/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "as_jwt_auth"
-  spec.version       = AsJwtAuth::VERSION
+  spec.version       = AsJWTAuth::VERSION
   spec.authors       = ["Kyle Rader", "Amiel Martin"]
   spec.email         = ["kyle@actionsprout.com", "amiel@actionsprout.com"]
 
@@ -29,6 +29,8 @@ Gem::Specification.new do |spec|
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
+
+  spec.add_dependency 'jwt'
 
   spec.add_development_dependency "bundler", "~> 1.14"
   spec.add_development_dependency "rake", "~> 10.0"
