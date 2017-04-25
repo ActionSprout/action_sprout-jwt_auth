@@ -1,16 +1,7 @@
 require 'spec_helper'
 
-describe AsJWTAuth::VerifyJWT do
-  let(:private_key) do
-    key = OpenSSL::PKey::EC.new 'prime256v1'
-    key.generate_key
-  end
-
-  let(:public_key) do
-    key = OpenSSL::PKey::EC.new private_key
-    key.private_key = nil
-    key
-  end
+RSpec.describe AsJWTAuth::VerifyJWT do
+  include TestKeys
 
   # In the future, we plan to support multiple audiences. When that happens,
   # `aud` will be required.
