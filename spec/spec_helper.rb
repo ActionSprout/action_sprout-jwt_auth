@@ -1,5 +1,6 @@
 require "bundler/setup"
 require "as_jwt_auth"
+require_relative "support/test_keys"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
