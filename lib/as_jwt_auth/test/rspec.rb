@@ -19,13 +19,13 @@ RSpec.configure do |config|
       For example:
 
           it_should_behave_like 'a JWT authorized request' do
-            before { get :index }
+            let(:response) { get :index }
           end
 
       Or:
 
          context 'the index page' do
-           before { get :index }
+           let(:response) { get :index }
            it_should_behave_like 'a JWT authorized request'
          end
 
