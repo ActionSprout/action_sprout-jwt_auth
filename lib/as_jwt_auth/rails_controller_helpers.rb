@@ -16,6 +16,11 @@ module AsJWTAuth
       request.env['HTTP_X_AUTH']
     end
 
+    def jwt_app_name
+      headers = AsJWTAuth.jwt_header jwt_auth_header
+      headers['iss']
+    end
+
     def public_key_for_jwt_auth
       raise NoMethodError, '#public_key is currently required to use verify_jwt! In the future this can happen automatically'
     end

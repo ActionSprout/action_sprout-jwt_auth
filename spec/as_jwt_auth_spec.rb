@@ -27,4 +27,18 @@ RSpec.describe AsJWTAuth do
       expect(result).to be_truthy
     end
   end
+
+  describe '#jwt_header' do
+    let(:payload) { {} }
+    let(:jwt) { JWT.encode payload, private_key, 'ES256', iss: 'tests' }
+
+    it 'returns the header' do
+      header = AsJWTAuth.jwt_header jwt
+      expect(header).to eq({
+        'iss' => 'tests',
+        'alg' => 'ES256',
+        'typ' => 'JWT',
+      })
+    end
+  end
 end
