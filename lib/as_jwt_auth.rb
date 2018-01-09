@@ -1,9 +1,9 @@
-require "as_jwt_auth/version"
+require 'as_jwt_auth/version'
+require 'as_jwt_auth/verify_jwt'
+require 'as_jwt_auth/generate_jwt'
+require 'as_jwt_auth/railtie' if defined?(Rails)
 
 module AsJWTAuth
-  autoload :VerifyJWT, 'as_jwt_auth/verify_jwt'
-  autoload :GenerateJWT, 'as_jwt_auth/generate_jwt'
-
   def self.generate_jwt(payload = {}, key: )
     GenerateJWT.new(key).generate payload
   end
