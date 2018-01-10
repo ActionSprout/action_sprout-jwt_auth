@@ -3,12 +3,11 @@ require 'spec_helper'
 RSpec.describe AsJWTAuth::GenerateJWT do
   include TestKeys
 
-  subject { described_class.new private_key }
+  subject { described_class.new key: private_key, issuer: issuer }
 
   describe '#generate' do
-    let(:jwt) do
-      subject.generate 'the' => 'payload'
-    end
+    let(:issuer) { 'as-issuer' }
+    let(:jwt) { subject.generate 'the' => 'payload' }
 
     it 'creates a JWT' do
       payload, _headers = JWT.decode jwt, public_key
@@ -25,14 +24,9 @@ RSpec.describe AsJWTAuth::GenerateJWT do
       expect(headers['jid']).to be
     end
 
-
-    context 'when specifying the app' do
-      subject { described_class.new private_key, app: 'as-fireweed' }
-
-      it 'adds the app name as the issuer' do
-        _payload, headers = JWT.decode jwt, public_key
-        expect(headers['iss']).to eq 'as-fireweed'
-      end
+    it 'adds the app name as the issuer' do
+      _payload, headers = JWT.decode jwt, public_key
+      expect(headers['iss']).to eq 'as-issuer'
     end
   end
 end

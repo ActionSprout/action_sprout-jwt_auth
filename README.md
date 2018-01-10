@@ -21,7 +21,7 @@ Here is an example of how AsJWTAuth is used in ActionSprout/fern and ActionSprou
 
 ```ruby
 # Generate a JWT in fern
-jwt_string = AsJWTAuth.generate_jwt({ 'aud' => 'as-waterleaf' }, key: Fern.private_key)
+jwt_string = AsJWTAuth.generate_jwt({ 'organization_id' => 1 }, issuer: 'as-fern', key: Fern.private_key)
 
 # Verify that JWT in waterleaf
 AsJWTAuth.verify_jwt jwt_string, key: ferns_public_key # => true or false

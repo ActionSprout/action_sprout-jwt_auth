@@ -5,8 +5,8 @@ require 'as_jwt_auth/jwt_header'
 require 'as_jwt_auth/railtie' if defined?(Rails)
 
 module AsJWTAuth
-  def self.generate_jwt(payload = {}, key: )
-    GenerateJWT.new(key).generate payload
+  def self.generate_jwt(payload = {}, issuer: , key: )
+    GenerateJWT.new(key: key, issuer: issuer).generate payload
   end
 
   def self.verify_jwt(jwt, key: )

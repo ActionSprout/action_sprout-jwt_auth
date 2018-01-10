@@ -6,9 +6,9 @@ module AsJWTAuth
     # Sign with ECDSA using P-256 and SHA-256
     ALGORITHM = 'ES256'
 
-    def initialize(key, app: nil)
+    def initialize(key: , issuer: )
       @key = key
-      @app = app
+      @issuer = issuer
     end
 
     def generate(payload = {})
@@ -17,12 +17,12 @@ module AsJWTAuth
 
     private
 
-    attr_reader :key, :app, :extra_header_attributes
+    attr_reader :key, :issuer, :extra_header_attributes
 
     def headers
       {
         iat: Time.now.to_i,
-        iss: app,
+        iss: issuer,
         jid: SecureRandom.uuid,
       }
     end

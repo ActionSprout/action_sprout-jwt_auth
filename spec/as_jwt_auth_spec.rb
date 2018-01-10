@@ -8,13 +8,18 @@ RSpec.describe AsJWTAuth do
   end
 
   describe '#generate_jwt' do
-    let(:jwt) do
-      described_class.generate_jwt 'the' => 'payload', key: private_key
-    end
+    let(:payload) { { 'the' => 'payload' } }
+
+    let(:jwt) { described_class.generate_jwt payload, key: private_key, issuer: 'test-issuer' }
 
     it 'creates a JWT' do
       payload, _headers = JWT.decode jwt, public_key
       expect(payload).to eq 'the' => 'payload'
+    end
+
+    it 'sets the issuer' do
+      _payload, headers = JWT.decode jwt, public_key
+      expect(headers['iss']).to eq 'test-issuer'
     end
   end
 
