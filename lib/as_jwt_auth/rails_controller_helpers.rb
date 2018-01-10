@@ -3,7 +3,7 @@ module AsJWTAuth
     def verify_jwt!
       if !jwt_authorized?
         logger.warn "AsJWTAuth: Unauthorized JWT: #{jwt_auth_header}"
-        render json: {}, status: :unauthorized
+        render json: jwt_unauthorized_response_data, status: :unauthorized
       end
     end
 
@@ -23,6 +23,16 @@ module AsJWTAuth
 
     def public_key_for_jwt_auth
       raise NoMethodError, '#public_key is currently required to use verify_jwt! In the future this can happen automatically'
+    end
+
+    def jwt_unauthorized_response_data
+      {
+        errors: [{
+          status: '401',
+          title: 'Unauthorized',
+          detail: 'This request is unauthorized.',
+        }],
+      }
     end
   end
 end
