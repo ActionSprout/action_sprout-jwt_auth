@@ -41,7 +41,7 @@ RSpec.describe AsJWTAuth::GetPublicKey do
       ENV.delete('JWT_KEY_SERVER_URL_TEMPLATE')
     end
 
-    subject { described_class.call jwt, http_client: http_client }
+    subject { described_class.call jwt: jwt, http_client: http_client }
 
     context 'happy path' do
       include_context 'key server http request'

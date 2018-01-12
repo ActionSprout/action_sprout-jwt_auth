@@ -1,9 +1,13 @@
 require 'httparty'
 require 'addressable/template'
+require 'action_sprout/method_object'
 
 module AsJWTAuth
   class GetPublicKey
-    def self.call(jwt, http_client: HTTParty)
+    extend ActionSprout::MethodObject
+    method_object :jwt, http_client: HTTParty
+
+    def call
       auth_url_template = Addressable::Template.new(ENV.fetch('JWT_KEY_SERVER_URL_TEMPLATE'))
       jwt_app_name = AsJWTAuth::JWTHeader.issuer jwt
       assert jwt_app_name, 'This JWT is missing an issuer'
@@ -14,7 +18,7 @@ module AsJWTAuth
       response.parsed_response.dig(*%w[ data attributes key ])
     end
 
-    def self.assert(value, message)
+    def assert(value, message)
       fail message unless value
     end
   end
