@@ -2,30 +2,16 @@ require 'jwt'
 
 module AsJWTAuth
   class VerifyJWT
-    def self.call(string)
-      new.valid? string
-    end
+    attr_reader :public_key
 
     def initialize(public_key)
       @public_key = public_key
     end
 
     def valid?(string)
-      JWT.decode string, public_key, true, jwt_options
+      JWTBody.call key: public_key, jwt: string
     rescue JWT::DecodeError
       false
     end
-
-    private
-
-    attr_reader :public_key
-
-    def jwt_options
-      { algorithm: 'ES256' }
-    end
-
-    # TODO: Comment on using this in the future
-    # aud: expected_audience, verify_aud: true
-
   end
 end

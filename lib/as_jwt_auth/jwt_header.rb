@@ -6,6 +6,10 @@ module AsJWTAuth
       _payload, headers = JWT.decode jwt, nil, false
       headers
     end
+
+    def self.issuer(jwt)
+      call(jwt)['iss']
+    end
   end
 end
 

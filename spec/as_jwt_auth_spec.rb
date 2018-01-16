@@ -7,6 +7,16 @@ RSpec.describe AsJWTAuth do
     expect(AsJWTAuth::VERSION).not_to be nil
   end
 
+  describe '#parse_jwt' do
+    let(:payload) { { 'example' => 'data' } }
+    let(:jwt) { JWT.encode payload, private_key, 'ES256' }
+
+    it 'works' do
+      result = described_class.jwt_body jwt, key: public_key
+      expect(result).to eq payload
+    end
+  end
+
   describe '#generate_jwt' do
     let(:payload) { { 'the' => 'payload' } }
 

@@ -1,12 +1,17 @@
 require 'as_jwt_auth/version'
-require 'as_jwt_auth/verify_jwt'
 require 'as_jwt_auth/generate_jwt'
 require 'as_jwt_auth/jwt_header'
+require 'as_jwt_auth/jwt_body'
+require 'as_jwt_auth/verify_jwt'
 require 'as_jwt_auth/railtie' if defined?(Rails)
 
 module AsJWTAuth
   def self.generate_jwt(payload = {}, issuer: default_issuer, key: default_private_key)
     GenerateJWT.new(key: key, issuer: issuer).generate payload
+  end
+
+  def self.jwt_body(jwt, key: )
+    JWTBody.call jwt: jwt, key: key
   end
 
   def self.verify_jwt(jwt, key: )
