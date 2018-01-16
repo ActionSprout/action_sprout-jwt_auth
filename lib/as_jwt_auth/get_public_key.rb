@@ -17,7 +17,7 @@ module AsJWTAuth
     def call
       assert jwt_app_name, 'This JWT is missing an issuer'
 
-      DEFAULT_CACHE.fetch(cache_key) do
+      cache.fetch(cache_key) do
         get_public_key
       end
     end
