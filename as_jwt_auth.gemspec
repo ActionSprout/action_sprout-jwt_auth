@@ -34,6 +34,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'addressable'
   spec.add_dependency 'httparty'
   spec.add_dependency 'action_sprout-method_object'
+  spec.add_dependency 'activesupport'
 
   spec.add_development_dependency "bundler", "~> 1.14"
   spec.add_development_dependency "rake", "~> 10.0"

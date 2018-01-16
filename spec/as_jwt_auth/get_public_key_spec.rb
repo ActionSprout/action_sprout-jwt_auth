@@ -5,13 +5,15 @@ RSpec.describe AsJWTAuth::GetPublicKey do
   include TestKeys
 
   let(:payload) { {} }
-  let(:header) { { 'iss' => 'test-issuer' } }
+  let(:header) { { 'iss' => issuer_app_name } }
   let(:jwt) { JWT.encode payload, private_key, 'ES256', header }
   let(:key_server_url_template) { 'http://key-server/api/keys/{issuer}' }
 
   let(:client_app_name) { 'client-issuer' }
   let(:client_private_key) { private_key.to_pem }
   let(:http_client) { double 'http_client' }
+
+  let(:issuer_app_name) { 'test-issuer' }
 
   shared_context 'key server http request' do
     let(:http_success) { true }
@@ -23,8 +25,10 @@ RSpec.describe AsJWTAuth::GetPublicKey do
       'data' => { 'attributes' => { 'key' => response_public_key } },
     } }
 
+    let(:http_request_url) { "http://key-server/api/keys/#{issuer_app_name}" }
+
     before do
-      allow(http_client).to receive(:get).with('http://key-server/api/keys/test-issuer', headers: hash_including('X-Auth')).and_return http_client_response
+      allow(http_client).to receive(:get).with(http_request_url, headers: hash_including('X-Auth')).and_return http_client_response
     end
   end
 
@@ -33,6 +37,7 @@ RSpec.describe AsJWTAuth::GetPublicKey do
       ENV['APP_NAME'] = client_app_name if client_app_name
       ENV['PRIVATE_KEY'] = client_private_key if client_private_key
       ENV['JWT_KEY_SERVER_URL_TEMPLATE'] = key_server_url_template if key_server_url_template
+      described_class::DEFAULT_CACHE.clear
     end
 
     after do
@@ -89,6 +94,39 @@ RSpec.describe AsJWTAuth::GetPublicKey do
 
       it 'raises an error' do
         expect { subject }.to raise_error(ArgumentError, /PRIVATE_KEY/)
+      end
+    end
+
+    describe 'caching' do
+      context 'the default cache' do
+        include_context 'key server http request'
+
+        it 'only calls the http client once when the same jwt is reuested twice' do
+          described_class.call jwt: jwt, http_client: http_client
+          described_class.call jwt: jwt, http_client: http_client
+
+          expect(http_client).to have_received(:get).once
+        end
+
+        it 'calls the http client again if there is a different issuer' do
+          described_class.call jwt: jwt, http_client: http_client
+
+          http_request_url2 = 'http://key-server/api/keys/another-issuer'
+          allow(http_client).to receive(:get).with(http_request_url2, headers: hash_including('X-Auth')).and_return http_client_response
+          jwt2 = JWT.encode payload, private_key, 'ES256', iss: 'another-issuer'
+          described_class.call jwt: jwt2, http_client: http_client
+
+
+          expect(http_client).to have_received(:get).twice
+        end
+
+        it 'only calls the http client once when there is a different jwt with the same issuer' do
+          described_class.call jwt: jwt, http_client: http_client
+          jwt2 = JWT.encode payload, private_key, 'ES256', iss: 'test-issuer'
+          described_class.call jwt: jwt2, http_client: http_client
+
+          expect(http_client).to have_received(:get).once
+        end
       end
     end
   end
