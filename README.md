@@ -33,7 +33,39 @@ AsJWTAuth.verify_jwt jwt_string, key: ferns_public_key # => true or false
 
 AsJWTAuth provides a handy method that can be used as a `before_action`: `verify_jwt!`.
 
-To use it, specify `verify_jwt!` as a `before_action` and define `public_key_for_jwt_auth`. For example:
+To use it, specify `verify_jwt!` as a `before_action`. For example:
+
+```ruby
+class MyController < ActionController::Base
+  before_action :verify_jwt!
+end
+```
+
+### Automatic Public Key Selection
+
+By default `AsJWTAuth` can make a HTTP request to get the public key it needs to verify the incomming JWT. Three environment variables are required for this to work:
+
+* `JWT_KEY_SERVER_URL_TEMPLATE`
+
+   A url template for where to find the public key. The parameter `{issuer}`
+   will be filled with the `iss` from the incoming JWT.
+
+   For example: `http://keys.actionsprout.com/api/keys/{issuer}`
+
+* `APP_NAME`
+
+  Used to generate a JWT to authenticate the request for a public key.
+
+* `PRIVATE_KEY`
+
+  Used to sign a JWT to authenticate the request for a public key.
+
+The response from the key server is expected to be a JSONAPI resource object with the attribute `key` that contains the PEM representation of the public key.
+
+### Bypassing Automatic Public Key Selection
+
+Internally, `AsJWTAuth` calls `#public_key_for_jwt_auth` on your controller. To prevent it from making an HTTP request to find the public key to verify an incoming JWT, define `#public_key_for_jwt_auth` to return the PEM representation of the public key.
+
 
 ```ruby
 class MyController < ActionController::Base
