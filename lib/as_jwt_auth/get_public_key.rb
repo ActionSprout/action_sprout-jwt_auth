@@ -43,7 +43,7 @@ module AsJWTAuth
     end
 
     def key_from_response(response)
-      response.parsed_response.dig(*%w[ data attributes key ])
+      response.parsed_response.dig 'data', 'attributes', 'key'
     end
 
     def public_key_url
