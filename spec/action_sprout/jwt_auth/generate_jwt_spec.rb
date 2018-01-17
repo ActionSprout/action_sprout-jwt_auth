@@ -11,22 +11,22 @@ RSpec.describe ActionSprout::JWTAuth::GenerateJWT do
 
     it 'creates a JWT' do
       payload, _headers = JWT.decode jwt, public_key
-      expect(payload).to eq 'the' => 'payload'
+      expect(payload['the']).to eq 'payload'
     end
 
-    it 'adds an iat to the headers' do
-      _payload, headers = JWT.decode jwt, public_key
-      expect(headers['iat']).to be
+    it 'adds an iat' do
+      payload, _headers = JWT.decode jwt, public_key
+      expect(payload['iat']).to be
     end
 
-    it 'adds a jid to the headers' do
-      _payload, headers = JWT.decode jwt, public_key
-      expect(headers['jid']).to be
+    it 'adds a jid' do
+      payload, _headers = JWT.decode jwt, public_key
+      expect(payload['jid']).to be
     end
 
     it 'adds the app name as the issuer' do
-      _payload, headers = JWT.decode jwt, public_key
-      expect(headers['iss']).to eq 'as-issuer'
+      payload, _headers = JWT.decode jwt, public_key
+      expect(payload['iss']).to eq 'as-issuer'
     end
   end
 end

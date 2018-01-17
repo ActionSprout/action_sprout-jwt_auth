@@ -5,8 +5,8 @@ RSpec.describe ActionSprout::JWTAuth::GetPublicKey do
   include TestKeys
 
   let(:payload) { {} }
-  let(:header) { { 'iss' => issuer_app_name } }
-  let(:jwt) { JWT.encode payload, private_key, 'ES256', header }
+  let(:claims) { { 'iss' => issuer_app_name } }
+  let(:jwt) { JWT.encode payload.merge(claims), private_key, 'ES256' }
   let(:key_server_url_template) { 'http://key-server/api/keys/{issuer}' }
 
   let(:client_app_name) { 'client-issuer' }
@@ -65,7 +65,7 @@ RSpec.describe ActionSprout::JWTAuth::GetPublicKey do
     end
 
     context 'when the jwt does not have an issuer' do
-      let(:header) { {} }
+      let(:claims) { {} }
 
       it 'raises an error' do
         expect { subject }.to raise_error(RuntimeError, /JWT.*issuer/)
@@ -113,7 +113,7 @@ RSpec.describe ActionSprout::JWTAuth::GetPublicKey do
 
           http_request_url2 = 'http://key-server/api/keys/another-issuer'
           allow(http_client).to receive(:get).with(http_request_url2, headers: hash_including('X-Auth')).and_return http_client_response
-          jwt2 = JWT.encode payload, private_key, 'ES256', iss: 'another-issuer'
+          jwt2 = JWT.encode payload.merge(iss: 'another-issuer'), private_key, 'ES256'
           described_class.call jwt: jwt2, http_client: http_client
 
 
@@ -122,7 +122,7 @@ RSpec.describe ActionSprout::JWTAuth::GetPublicKey do
 
         it 'only calls the http client once when there is a different jwt with the same issuer' do
           described_class.call jwt: jwt, http_client: http_client
-          jwt2 = JWT.encode payload, private_key, 'ES256', iss: 'test-issuer'
+          jwt2 = JWT.encode payload.merge(iss: 'test-issuer'), private_key, 'ES256'
           described_class.call jwt: jwt2, http_client: http_client
 
           expect(http_client).to have_received(:get).once

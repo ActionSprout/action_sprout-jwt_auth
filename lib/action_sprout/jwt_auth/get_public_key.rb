@@ -56,7 +56,7 @@ module ActionSprout
       end
 
       def jwt_app_name
-        @_jwt_app_name ||= JWTHeader.issuer jwt
+        @_jwt_app_name ||= JWTAuth.jwt_issuer jwt
       end
 
       def jwt_for_request
