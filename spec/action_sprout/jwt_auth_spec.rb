@@ -24,12 +24,12 @@ RSpec.describe ActionSprout::JWTAuth do
 
     it 'creates a JWT' do
       payload, _headers = JWT.decode jwt, public_key
-      expect(payload).to eq 'the' => 'payload'
+      expect(payload['the']).to eq 'payload'
     end
 
     it 'sets the issuer' do
-      _payload, headers = JWT.decode jwt, public_key
-      expect(headers['iss']).to eq 'test-issuer'
+      payload, _headers = JWT.decode jwt, public_key
+      expect(payload['iss']).to eq 'test-issuer'
     end
 
     context 'when no issuer is defined' do
@@ -48,8 +48,8 @@ RSpec.describe ActionSprout::JWTAuth do
         after { ENV.delete('APP_NAME') }
 
         it 'uses the environment variable APP_NAME' do
-          _payload, headers = JWT.decode jwt, public_key
-          expect(headers['iss']).to eq 'test-app'
+          payload, _headers = JWT.decode jwt, public_key
+          expect(payload['iss']).to eq 'test-app'
         end
       end
     end
@@ -99,17 +99,13 @@ RSpec.describe ActionSprout::JWTAuth do
     end
   end
 
-  describe '#jwt_header' do
-    let(:payload) { {} }
-    let(:jwt) { JWT.encode payload, private_key, 'ES256', iss: 'tests' }
+  describe '#jwt_issuer' do
+    let(:payload) { { iss: 'tests' } }
+    let(:jwt) { JWT.encode payload, private_key, 'ES256' }
 
-    it 'returns the header' do
-      header = described_class.jwt_header jwt
-      expect(header).to eq({
-        'iss' => 'tests',
-        'alg' => 'ES256',
-        'typ' => 'JWT',
-      })
+    it 'returns the issuer' do
+      issuer = described_class.jwt_issuer jwt
+      expect(issuer).to eq 'tests'
     end
   end
 end

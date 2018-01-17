@@ -1,6 +1,5 @@
 require 'action_sprout/jwt_auth/version'
 require 'action_sprout/jwt_auth/generate_jwt'
-require 'action_sprout/jwt_auth/jwt_header'
 require 'action_sprout/jwt_auth/jwt_body'
 require 'action_sprout/jwt_auth/verify_jwt'
 require 'action_sprout/jwt_auth/railtie' if defined?(Rails)
@@ -20,8 +19,9 @@ module ActionSprout
       verifier.valid? jwt
     end
 
-    def self.jwt_header(jwt)
-      JWTHeader.call jwt
+    def self.jwt_issuer(jwt)
+      payload, _headers = JWT.decode jwt, nil, false
+      payload['iss']
     end
 
     def self.default_issuer

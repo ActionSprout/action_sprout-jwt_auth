@@ -13,14 +13,14 @@ module ActionSprout
       end
 
       def generate(payload = {})
-        JWT.encode payload, key, ALGORITHM, headers
+        JWT.encode payload.merge(claims), key, ALGORITHM
       end
 
       private
 
-      attr_reader :key, :issuer, :extra_header_attributes
+      attr_reader :key, :issuer
 
-      def headers
+      def claims
         {
           iat: Time.now.to_i,
           iss: issuer,
