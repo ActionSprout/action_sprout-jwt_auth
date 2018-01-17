@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe AsJWTAuth::JWTHeader do
+RSpec.describe ActionSprout::JWTAuth::JWTHeader do
   include TestKeys
 
   let(:payload) { {} }
@@ -9,7 +9,7 @@ RSpec.describe AsJWTAuth::JWTHeader do
 
   describe '.call' do
     it 'returns the header' do
-      header = AsJWTAuth::JWTHeader.call jwt
+      header = described_class.call jwt
       expect(header).to eq({
         'iss' => 'tests',
         'alg' => 'ES256',
@@ -20,7 +20,7 @@ RSpec.describe AsJWTAuth::JWTHeader do
 
   describe '.issuer' do
     it 'returns only the issuer' do
-      issuer = AsJWTAuth::JWTHeader.issuer jwt
+      issuer = described_class.issuer jwt
       expect(issuer).to eq  'tests'
     end
   end

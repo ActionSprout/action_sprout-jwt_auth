@@ -1,4 +1,4 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in as_jwt_auth.gemspec
+# Specify your gem's dependencies in action_sprout-jwt_auth.gemspec
 gemspec

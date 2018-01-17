@@ -1,17 +1,17 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'as_jwt_auth/version'
+require 'action_sprout/jwt_auth/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "as_jwt_auth"
-  spec.version       = AsJWTAuth::VERSION
+  spec.name          = "action_sprout-jwt_auth"
+  spec.version       = ActionSprout::JWTAuth::VERSION
   spec.authors       = ["Kyle Rader", "Amiel Martin"]
   spec.email         = ["kyle@actionsprout.com", "amiel@actionsprout.com"]
 
   spec.summary       = %q{A JWT Auth Gem}
   spec.description   = %q{This gem provides a method for handling JWT authentication between AS services.}
-  spec.homepage      = "https://github.com/ActionSprout/as_jwt_auth"
+  spec.homepage      = "https://github.com/ActionSprout/action_sprout-jwt_auth"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'

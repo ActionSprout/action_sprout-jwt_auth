@@ -1,4 +1,4 @@
-# AsJWTAuth
+# ActionSprout::JWTAuth
 
 This gem provides a method for handling JWT authentication between AS services.
 
@@ -8,7 +8,7 @@ Add this line to your application's Gemfile:
 
 ```ruby
 # make sure gemfury source is also in this file.
-gem 'as_jwt_auth'
+gem 'action_sprout-jwt_auth'
 ```
 
 And then execute:
@@ -17,21 +17,21 @@ And then execute:
 
 ## Usage
 
-Here is an example of how AsJWTAuth is used in ActionSprout/fern and ActionSprout/waterleaf.
+Here is an example of how ActionSprout::JWTAuth is used in ActionSprout/fern and ActionSprout/waterleaf.
 
 ```ruby
 # Generate a JWT in fern
-jwt_string = AsJWTAuth.generate_jwt({ 'organization_id' => 1 }, issuer: 'as-fern', key: Fern.private_key)
+jwt_string = ActionSprout::JWTAuth.generate_jwt({ 'organization_id' => 1 }, issuer: 'as-fern', key: Fern.private_key)
 
 # Verify that JWT in waterleaf
-AsJWTAuth.verify_jwt jwt_string, key: ferns_public_key # => true or false
+ActionSprout::JWTAuth.verify_jwt jwt_string, key: ferns_public_key # => true or false
 ```
 
 ## Rails Usage
 
 ### Controller Helpers
 
-AsJWTAuth provides a handy method that can be used as a `before_action`: `verify_jwt!`.
+ActionSprout::JWTAuth provides a handy method that can be used as a `before_action`: `verify_jwt!`.
 
 To use it, specify `verify_jwt!` as a `before_action`. For example:
 
@@ -43,7 +43,7 @@ end
 
 ### Automatic Public Key Selection
 
-By default `AsJWTAuth` can make a HTTP request to get the public key it needs to verify the incomming JWT. Three environment variables are required for this to work:
+By default `ActionSprout::JWTAuth` can make a HTTP request to get the public key it needs to verify the incomming JWT. Three environment variables are required for this to work:
 
 * `JWT_KEY_SERVER_URL_TEMPLATE`
 
@@ -64,7 +64,7 @@ The response from the key server is expected to be a JSONAPI resource object wit
 
 ### Bypassing Automatic Public Key Selection
 
-Internally, `AsJWTAuth` calls `#public_key_for_jwt_auth` on your controller. To prevent it from making an HTTP request to find the public key to verify an incoming JWT, define `#public_key_for_jwt_auth` to return the PEM representation of the public key.
+Internally, `ActionSprout::JWTAuth` calls `#public_key_for_jwt_auth` on your controller. To prevent it from making an HTTP request to find the public key to verify an incoming JWT, define `#public_key_for_jwt_auth` to return the PEM representation of the public key.
 
 
 ```ruby
@@ -81,7 +81,7 @@ end
 
 ### Test Helpers
 
-AsJWTAuth provides some handy test helpers. For example:
+ActionSprout::JWTAuth provides some handy test helpers. For example:
 
 ```ruby
 before { assume_valid_jwt from: 'as-issuer' }
@@ -91,7 +91,7 @@ before { set_jwt_auth user_id: 1 }
 
 ### RSpec shared examples
 
-AsJWTAuth also provides a shared example to be used to verify that a request is protected by JWT. You must define the request.
+ActionSprout::JWTAuth also provides a shared example to be used to verify that a request is protected by JWT. You must define the request.
 
 The request can either be in a `before` block, or defined as `let(:request)`.
 
@@ -123,12 +123,12 @@ by more than one service. In this case, the service will need to determine who
 has made the call in order to use the correct public key to verify with.
 
 When we have that requirement, we plan to add logic and configuration to
-AsJWTAuth to handle finding the correct public key.
+ActionSprout::JWTAuth to handle finding the correct public key.
 
 ## Development
 
 #### Setup
-1. Check out repo `https://github.com/ActionSprout/as_jwt_auth.git`
+1. Check out repo `https://github.com/ActionSprout/action_sprout-jwt_auth.git`
 2. `bin/setup` (this runs `bundle install`)
 3. Run tests with `rake spec`
 
@@ -137,13 +137,13 @@ You can also run `bin/console` for an interactive prompt that will allow you to 
 **Use locally**
 To install this gem into a local project add to your Gemfile
 ```ruby
-gem 'as_jwt_auth', path: 'relative/path/to/gem/repo'
+gem 'action_sprout-jwt_auth', path: 'relative/path/to/gem/repo'
 ```
 and then `bundle install` in that project. Remember to add the Gemfury `source` before
 using in production.
 
 #### Release a new Version
-Update the version number in `lib/as_jwt_auth/version.rb` and make you final version change commit.
+Update the version number in `lib/action_sprout/jwt_auth/version.rb` and make you final version change commit.
 Create a release tag with `gem_push=no rake release`.
 
 Make sure you have the git remote `fury` added (can be called anything).

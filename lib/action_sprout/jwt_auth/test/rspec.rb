@@ -1,7 +1,7 @@
-require 'as_jwt_auth/test/controller_helpers'
+require 'action_sprout/jwt_auth/test/controller_helpers'
 
 RSpec.configure do |config|
-  config.include AsJWTAuth::Test::ControllerHelpers, type: :controller
+  config.include ActionSprout::JWTAuth::Test::ControllerHelpers, type: :controller
 
   RSpec.shared_examples 'a JWT authorized request' do
     let(:jwt) { 'A.JWT' }
