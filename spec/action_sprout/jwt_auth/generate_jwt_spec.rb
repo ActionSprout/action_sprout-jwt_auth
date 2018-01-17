@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe AsJWTAuth::GenerateJWT do
+RSpec.describe ActionSprout::JWTAuth::GenerateJWT do
   include TestKeys
 
   subject { described_class.new key: private_key, issuer: issuer }

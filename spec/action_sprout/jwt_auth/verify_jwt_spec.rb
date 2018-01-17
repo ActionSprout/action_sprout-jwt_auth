@@ -1,10 +1,8 @@
 require 'spec_helper'
 
-RSpec.describe AsJWTAuth::VerifyJWT do
+RSpec.describe ActionSprout::JWTAuth::VerifyJWT do
   include TestKeys
 
-  # In the future, we plan to support multiple audiences. When that happens,
-  # `aud` will be required.
   let(:payload) { { aud: 'as-example' } }
   let(:jwt) { JWT.encode payload, private_key, 'ES256' }
 

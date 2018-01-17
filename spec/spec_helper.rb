@@ -1,5 +1,5 @@
 require "bundler/setup"
-require "as_jwt_auth"
+require "action_sprout/jwt_auth"
 require_relative "support/test_keys"
 
 RSpec.configure do |config|

@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'as_jwt_auth/get_public_key'
+require 'action_sprout/jwt_auth/get_public_key'
 
-RSpec.describe AsJWTAuth::GetPublicKey do
+RSpec.describe ActionSprout::JWTAuth::GetPublicKey do
   include TestKeys
 
   let(:payload) { {} }

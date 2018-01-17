@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe AsJWTAuth::JWTBody, '.call' do
+RSpec.describe ActionSprout::JWTAuth::JWTBody, '.call' do
   include TestKeys
 
   let(:payload) { { 'data' => 'example' } }

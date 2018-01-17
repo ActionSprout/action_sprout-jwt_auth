@@ -1,10 +1,10 @@
 require "spec_helper"
 
-RSpec.describe AsJWTAuth do
+RSpec.describe ActionSprout::JWTAuth do
   include TestKeys
 
   it "has a version number" do
-    expect(AsJWTAuth::VERSION).not_to be nil
+    expect(ActionSprout::JWTAuth::VERSION).not_to be nil
   end
 
   describe '#parse_jwt' do
@@ -104,7 +104,7 @@ RSpec.describe AsJWTAuth do
     let(:jwt) { JWT.encode payload, private_key, 'ES256', iss: 'tests' }
 
     it 'returns the header' do
-      header = AsJWTAuth.jwt_header jwt
+      header = described_class.jwt_header jwt
       expect(header).to eq({
         'iss' => 'tests',
         'alg' => 'ES256',
