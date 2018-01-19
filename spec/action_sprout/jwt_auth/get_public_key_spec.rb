@@ -54,6 +54,29 @@ RSpec.describe ActionSprout::JWTAuth::GetPublicKey do
       it 'returns the public key' do
         expect(subject).to eq 'the-public-key'
       end
+
+      it 'authorizes the request with a valid jwt' do
+        subject
+
+        expect(http_client).to have_received(:get) do |url, options|
+          auth_jwt = options.dig(:headers, 'X-Auth')
+
+          result = JWT.decode auth_jwt, private_key, true, { algorithm: 'ES256' }
+          expect(result.first['iss']).to eq 'client-issuer'
+        end
+      end
+
+      it 'authorizes the request with a jwt that passes aud verification' do
+        subject
+
+        expect(http_client).to have_received(:get) do |url, options|
+          auth_jwt = options.dig(:headers, 'X-Auth')
+
+          result = JWT.decode auth_jwt, private_key, true, { algorithm: 'ES256', verify_aud: true, aud: 'http://key-server/api/keys/test-issuer' }
+          expect(result.first['aud']).to eq ['http://key-server/api/keys/test-issuer']
+        end
+      end
+
     end
 
     context 'when the key server url template is not defined' do

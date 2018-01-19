@@ -60,7 +60,7 @@ module ActionSprout
       end
 
       def jwt_for_request
-        @_jwt_for_request ||= JWTAuth.generate_jwt
+        @_jwt_for_request ||= JWTAuth.generate_jwt 'aud' => [public_key_url]
       end
     end
   end

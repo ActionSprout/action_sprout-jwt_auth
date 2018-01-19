@@ -1,24 +1,20 @@
 require 'jwt'
 require 'securerandom'
+require 'kwattr'
 
 module ActionSprout
   module JWTAuth
     class GenerateJWT
+      kwattr :key, :issuer
+
       # Sign with ECDSA using P-256 and SHA-256
       ALGORITHM = 'ES256'
-
-      def initialize(key: , issuer: )
-        @key = key
-        @issuer = issuer
-      end
 
       def generate(payload = {})
         JWT.encode payload.merge(claims), key, ALGORITHM
       end
 
       private
-
-      attr_reader :key, :issuer
 
       def claims
         {
