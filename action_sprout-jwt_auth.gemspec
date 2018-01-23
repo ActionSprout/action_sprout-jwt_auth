@@ -31,10 +31,10 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency 'jwt', '~> 1.5'
-  spec.add_dependency 'addressable'
-  spec.add_dependency 'httparty'
-  spec.add_dependency 'action_sprout-method_object'
-  spec.add_dependency 'activesupport'
+  spec.add_dependency 'addressable', '~> 2'
+  spec.add_dependency 'httparty', '~> 0.15'
+  spec.add_dependency 'action_sprout-method_object', '~> 0'
+  spec.add_dependency 'activesupport', '> 4'
 
   spec.add_development_dependency "bundler", "~> 1.14"
   spec.add_development_dependency "rake", "~> 10.0"
