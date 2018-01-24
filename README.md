@@ -62,7 +62,7 @@ By default `ActionSprout::JWTAuth` can make a HTTP request to get the public key
 
 The response from the key server is expected to be a JSONAPI resource object with the attribute `key` that contains the PEM representation of the public key.
 
-### Bypassing Automatic Public Key Selection
+#### Bypassing Automatic Public Key Selection
 
 Internally, `ActionSprout::JWTAuth` calls `#public_key_for_jwt_auth` on your controller. To prevent it from making an HTTP request to find the public key to verify an incoming JWT, define `#public_key_for_jwt_auth` to return the PEM representation of the public key.
 
@@ -78,6 +78,46 @@ class MyController < ActionController::Base
   end
 end
 ```
+
+### `aud` Verification
+
+By default, `:verify_jwt!` verifies that the JWT includes the `aud` claim with the request url.
+
+To generate a JWT that passes this verification, include an `'aud'` in the payload as an array with the url of the request.
+
+Here is an example using HTTParty.
+
+```ruby
+url = 'http://example.com/api/people'
+query = { name: 'Princess Buttercup' }
+AsJWTAuth.generate_jwt('aud' => [url])
+headers = { 'X-Auth' => jwt_for_path(path) }
+HTTParty.get url, query: query, headers: headers
+```
+
+#### Customizing `aud` Verification
+
+The used to verify the JWT can be customized by overwriding `jwt_options_for_verification` in the controller.
+
+Please see the [`jwt-ruby` documentation](https://github.com/jwt/ruby-jwt) for examples of claims available for verification.
+
+For example, to verify the audience is simply the name of this app, try something like this:
+
+```ruby
+def jwt_options_for_verification
+  { verify_aud: true, aud: ENV.fetch('APP_NAME') }
+end
+```
+
+Or, to disable this type of verification entirely:
+
+```ruby
+def jwt_options_for_verification
+  {}
+end
+```
+
+It is not recommended to disable this verification unless some other method is used to authorize the data returned (such as using something in the token to scope the data returned).
 
 ### Test Helpers
 
