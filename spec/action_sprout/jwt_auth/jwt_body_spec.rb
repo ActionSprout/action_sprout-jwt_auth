@@ -5,8 +5,9 @@ RSpec.describe ActionSprout::JWTAuth::JWTBody, '.call' do
 
   let(:payload) { { 'data' => 'example' } }
   let(:jwt) { JWT.encode payload, private_key, 'ES256' }
+  let(:options) { {} }
 
-  subject { described_class.call jwt: jwt, key: public_key }
+  subject { described_class.call jwt: jwt, key: public_key, options: options }
 
   context 'with a valid JWT' do
     it { is_expected.to eq payload }

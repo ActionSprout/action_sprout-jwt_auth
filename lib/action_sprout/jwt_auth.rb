@@ -11,12 +11,12 @@ module ActionSprout
       GenerateJWT.new(key: key, issuer: issuer).generate payload
     end
 
-    def self.jwt_body(jwt, key: )
-      JWTBody.call jwt: jwt, key: key
+    def self.jwt_body(jwt, key: , options: {})
+      JWTBody.call jwt: jwt, key: key, options: options
     end
 
-    def self.verify_jwt(jwt, key: )
-      verifier = VerifyJWT.new(key)
+    def self.verify_jwt(jwt, key: , options: {})
+      verifier = VerifyJWT.new(key, options: options)
       verifier.valid? jwt
     end
 
