@@ -90,22 +90,22 @@ Here is an example using HTTParty.
 ```ruby
 url = 'http://example.com/api/people'
 query = { name: 'Princess Buttercup' }
-AsJWTAuth.generate_jwt('aud' => [url])
-headers = { 'X-Auth' => jwt_for_path(path) }
+jwt = AsJWTAuth.generate_jwt('aud' => [url])
+headers = { 'X-Auth' => jwt }
 HTTParty.get url, query: query, headers: headers
 ```
 
 #### Customizing `aud` Verification
 
-The used to verify the JWT can be customized by overwriding `jwt_options_for_verification` in the controller.
+The options used to verify the JWT can be customized by overwriting `jwt_options_for_verification` in the controller.
 
 Please see the [`jwt-ruby` documentation](https://github.com/jwt/ruby-jwt) for examples of claims available for verification.
 
-For example, to verify the audience is simply the name of this app, try something like this:
+For example, to verify the request is issued by a specific app, try something like this:
 
 ```ruby
 def jwt_options_for_verification
-  { verify_aud: true, aud: ENV.fetch('APP_NAME') }
+  { verify_iss: true, iss: 'other-app' }
 end
 ```
 
