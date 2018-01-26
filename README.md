@@ -99,7 +99,7 @@ HTTParty.get url, query: query, headers: headers
 
 The options used to verify the JWT can be customized by overwriting `jwt_options_for_verification` in the controller.
 
-Please see the [`jwt-ruby` documentation](https://github.com/jwt/ruby-jwt) for examples of claims available for verification.
+Please see the [`jwt-ruby` documentation](https://github.com/jwt/ruby-jwt) for examples of claims available for verification. Any claim supported by `jwt-ruby` can be specified in `jwt_options_for_verification`.
 
 For example, to verify the request is issued by a specific app, try something like this:
 
