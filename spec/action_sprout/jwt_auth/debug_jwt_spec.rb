@@ -13,7 +13,7 @@ RSpec.describe ActionSprout::JWTAuth::DebugJWT, '.call' do
     it { is_expected.to eq payload }
   end
 
-  context 'with a completely invalid jwt' do
+  context 'with a jwt that is not really a JWT' do
     let(:jwt) { 'omg-foo' }
 
     it { expect { subject }.to raise_error(JWT::DecodeError) }
