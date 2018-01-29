@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-### FIxed
+### Fixed
 
 - Fix test helpers (tests using the rspec shared examples provided by this gem
   will be broken with 0.5.0 (#18)
