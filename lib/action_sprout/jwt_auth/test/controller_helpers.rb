@@ -13,10 +13,12 @@ module ActionSprout
 
           if jwt_result
             payload = make_jwt_claims.merge(jwt_result)
+            allow(ActionSprout::JWTAuth).to receive(:debug_jwt).with(jwt).and_return payload
             allow(ActionSprout::JWTAuth).to receive(:jwt_body).with(jwt, key: key_matcher).and_return payload
-            allow(ActionSprout::JWTAuth).to receive(:verify_jwt).with(jwt, key: key_matcher).and_return payload
+            allow(ActionSprout::JWTAuth).to receive(:verify_jwt).with(jwt, key: key_matcher, options: hash_including).and_return payload
           else
-            allow(ActionSprout::JWTAuth).to receive(:verify_jwt).with(jwt, key: key_matcher).and_return false
+            allow(ActionSprout::JWTAuth).to receive(:debug_jwt).with(jwt).and_return({})
+            allow(ActionSprout::JWTAuth).to receive(:verify_jwt).with(jwt, key: key_matcher, options: hash_including).and_return payload
           end
         end
 
