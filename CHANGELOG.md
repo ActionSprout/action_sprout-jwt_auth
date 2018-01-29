@@ -30,7 +30,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Better logging for unauthorized JWTs
 
-### [0.4.1] - 2018-01-19
+## [0.4.1] - 2018-01-19
 
 ### Added
 
