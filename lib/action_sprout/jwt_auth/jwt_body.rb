@@ -5,7 +5,7 @@ module ActionSprout
   module JWTAuth
     class JWTBody
       extend ActionSprout::MethodObject
-      method_object :jwt, :key
+      method_object :jwt, :key, :options
 
       def call
         payload, _headers = JWT.decode jwt, key, true, jwt_options
@@ -18,7 +18,7 @@ module ActionSprout
       private
 
       def jwt_options
-        { algorithm: 'ES256' }
+        options.merge algorithm: 'ES256'
       end
 
     end

@@ -2,6 +2,7 @@ require 'action_sprout/jwt_auth/version'
 require 'action_sprout/jwt_auth/generate_jwt'
 require 'action_sprout/jwt_auth/jwt_body'
 require 'action_sprout/jwt_auth/verify_jwt'
+require 'action_sprout/jwt_auth/debug_jwt'
 require 'action_sprout/jwt_auth/railtie' if defined?(Rails)
 
 module ActionSprout
@@ -10,13 +11,17 @@ module ActionSprout
       GenerateJWT.new(key: key, issuer: issuer).generate payload
     end
 
-    def self.jwt_body(jwt, key: )
-      JWTBody.call jwt: jwt, key: key
+    def self.jwt_body(jwt, key: , options: {})
+      JWTBody.call jwt: jwt, key: key, options: options
     end
 
-    def self.verify_jwt(jwt, key: )
-      verifier = VerifyJWT.new(key)
+    def self.verify_jwt(jwt, key: , options: {})
+      verifier = VerifyJWT.new(key, options: options)
       verifier.valid? jwt
+    end
+
+    def self.debug_jwt(jwt)
+      DebugJWT.call jwt: jwt
     end
 
     def self.jwt_issuer(jwt)

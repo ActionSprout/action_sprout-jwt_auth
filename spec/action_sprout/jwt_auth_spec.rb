@@ -99,6 +99,16 @@ RSpec.describe ActionSprout::JWTAuth do
     end
   end
 
+  describe '#debug_jwt' do
+    let(:payload) { { 'iss' => 'test-issuer', 'aud' => ['http://foo'] } }
+    let(:jwt) { JWT.encode payload, private_key, 'ES256' }
+
+    it 'works' do
+      result = described_class.debug_jwt jwt
+      expect(result).to eq payload
+    end
+  end
+
   describe '#jwt_issuer' do
     let(:payload) { { iss: 'tests' } }
     let(:jwt) { JWT.encode payload, private_key, 'ES256' }
