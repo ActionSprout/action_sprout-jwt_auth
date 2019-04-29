@@ -1,5 +1,7 @@
 namespace :action_sprout do
   namespace :jwt_auth do
+    desc "Generate a public/private key-pair for use with JWTAuth"
+
     task :generate_key do
       require 'openssl'
 
