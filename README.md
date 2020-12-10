@@ -154,6 +154,17 @@ end
 
 If you are seeing this error and have defined a request, it is possible that your request is raising an exception. Check rspec results for other exceptions.
 
+Some requests may require a specific JWT `sub`. You can define a custom value through `jwt_sub`:
+
+```ruby
+context 'the index page' do
+ ...
+ it_should_behave_like 'a JWT authorized request' do
+  let(:jwt_sub) { ... }
+ end
+end
+```
+
 
 ## Roadmap
 
