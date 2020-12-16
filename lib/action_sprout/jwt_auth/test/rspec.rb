@@ -28,6 +28,7 @@ RSpec.configure do |config|
   RSpec.shared_examples 'a JWT authorized request' do
     let(:jwt) { 'A.JWT' }
     let(:expected_response_code) { 200 }
+    let(:jwt_sub) { 'SUB' }
 
     before do
       set_jwt_auth jwt, jwt_result: jwt_result
@@ -38,7 +39,7 @@ RSpec.configure do |config|
     end
 
     context 'with a good JWT' do
-      let(:jwt_result) { {} }
+      let(:jwt_result) { { 'sub' => jwt_sub } }
 
       it 'is authorized' do
         expect(response).to be_success
